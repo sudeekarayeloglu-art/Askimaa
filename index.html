@@ -6,50 +6,61 @@
 
 <style>
 body {
+    margin: 0;
     font-family: Arial, sans-serif;
     text-align: center;
-    background: linear-gradient(#fff0f5, #ffe6f0);
-    overflow-x: hidden;
+    background: linear-gradient(#ffe6f0, #fff0f5);
+    overflow: hidden;
 }
 
-/* Başlık */
+/* Açılış ekranı */
+#opening {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #ffccdd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+}
+
+#mainContent {
+    display: none;
+    padding: 20px;
+}
+
+/* Buton */
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    background: #e6005c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Büyük M */
+.bigM {
+    font-size: 110px;
+    color: #e6005c;
+    margin: 10px;
+}
+
+/* Yazılar */
 h1 {
     color: #e6005c;
-    animation: fadeIn 2s;
 }
 
-@keyframes fadeIn {
-    from {opacity: 0;}
-    to {opacity: 1;}
-}
-
-/* Geri sayım */
-#countdown {
-    font-size: 20px;
-    color: #cc0052;
+.message {
+    font-size: 18px;
     margin: 15px;
+    color: #444;
 }
 
-/* Küçük slider */
-.slider {
-    position: relative;
-    max-width: 200px;
-    margin: auto;
-}
-
-.slide {
-    display: none;
-}
-
-.slide img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 15px;
-}
-
-/* Kalpler */
-.heart {
+/* Arka plan kalpleri */
+.bgHeart {
     position: fixed;
     bottom: -10px;
     color: #ff4d88;
@@ -57,94 +68,75 @@ h1 {
 }
 
 @keyframes floatUp {
-    from {transform: translateY(0); opacity: 1;}
-    to {transform: translateY(-800px); opacity: 0;}
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-800px);
+        opacity: 0;
+    }
 }
 
-/* Müzik */
-audio {
-    margin: 15px;
+/* Oyun alanı */
+#gameArea {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    border-top: 1px solid #ffcce0;
 }
 
-/* Mesaj */
-.message {
-    margin: 20px;
-    font-size: 18px;
-    color: #444;
+.gameHeart {
+    position: absolute;
+    font-size: 30px;
+    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Aşkımaa ❤️</h1>
-
-<p>Mesafeler sadece geçici… Kalbim hep seninle.</p>
-
-<h2>Terhise Kalan Süre</h2>
-<div id="countdown"></div>
-
-<!-- MÜZİK -->
-<audio controls loop>
-  <source src="sarki.mp3" type="audio/mpeg">
-  Tarayıcı müziği desteklemiyor.
-</audio>
-
-<h2>Anılarımız</h2>
-
-<div class="slider">
-<img class="slide" src="IMG-20260205-WA0018.jpg">
-<img class="slide" src="IMG-20260205-WA0022.jpg">
-<img class="slide" src="IMG-20260205-WA0028.jpg">
-<!-- Diğer fotoğrafları aynı şekilde ekleyebilirsin -->
+<!-- Açılış -->
+<div id="opening">
+    <h2>Aşkımaa için bir sürpriz var ❤️</h2>
+    <button onclick="startSite()">Aç</button>
 </div>
 
-<div class="message">
-Her geçen gün seni bana daha da yaklaştırıyor.  
-Bu günler geçecek…  
-Ve biz yine yan yana olacağız.  
-Seni çok seviyorum ❤️
+<!-- Ana içerik -->
+<div id="mainContent">
+
+    <div class="bigM">M</div>
+
+    <h1>Aşkımaa ❤️</h1>
+
+    <div class="message">
+        Sen vatana hizmet ederken  
+        kalbim hep seninle.  
+        Mesafeler geçici…  
+        Bizim sevgimiz her şeyden güçlü.  
+        Seni çok seviyorum.
+    </div>
+
+    <h3>Kalbi Yakala ❤️</h3>
+    <div>Skor: <span id="score">0</span></div>
+
+    <div id="gameArea"></div>
+
 </div>
 
 <script>
-// Slider
-let index = 0;
-showSlides();
 
-function showSlides() {
-  let slides = document.getElementsByClassName("slide");
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  index++;
-  if (index > slides.length) {index = 1}
-  slides[index-1].style.display = "block";
-  setTimeout(showSlides, 2000);
+// Açılış
+function startSite() {
+    document.getElementById("opening").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
 }
 
-// Geri sayım
-let targetDate = new Date("Feb 9, 2027 00:00:00").getTime();
-
-setInterval(function() {
-  let now = new Date().getTime();
-  let distance = targetDate - now;
-
-  let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-  document.getElementById("countdown").innerHTML =
-  days + " gün " + hours + " saat " + minutes + " dakika";
-
-  if (distance < 0) {
-    document.getElementById("countdown").innerHTML = "Kavuştuk ❤️";
-  }
-}, 60000);
-
-// Uçan kalpler
-function createHeart() {
+// Arka plan uçan kalpler
+function createBgHeart() {
     let heart = document.createElement("div");
-    heart.classList.add("heart");
+    heart.classList.add("bgHeart");
     heart.innerHTML = "❤";
     heart.style.left = Math.random() * 100 + "vw";
     heart.style.fontSize = (Math.random() * 20 + 10) + "px";
@@ -155,7 +147,35 @@ function createHeart() {
     }, 6000);
 }
 
-setInterval(createHeart, 500);
+setInterval(createBgHeart, 500);
+
+// Oyun
+let score = 0;
+let gameArea = document.getElementById("gameArea");
+
+function createGameHeart() {
+    let heart = document.createElement("div");
+    heart.classList.add("gameHeart");
+    heart.innerHTML = "❤️";
+
+    heart.style.left = Math.random() * 90 + "%";
+    heart.style.top = Math.random() * 250 + "px";
+
+    heart.onclick = function() {
+        score++;
+        document.getElementById("score").innerText = score;
+        heart.remove();
+    };
+
+    gameArea.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 3000);
+}
+
+setInterval(createGameHeart, 1500);
+
 </script>
 
 </body>
