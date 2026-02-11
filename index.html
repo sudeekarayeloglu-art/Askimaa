@@ -1,155 +1,153 @@
 <!DOCTYPE html><html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Askerim İçin</title>
-<style>
-body {
+<title>Askerim İçin</title><style>
+body{
     margin:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(#2e4d2c, #6b8f5a);
-    color:white;
+    font-family:Arial, sans-serif;
     text-align:center;
+    background:linear-gradient(#2e4d2c,#6b8f5a);
+    color:white;
     overflow:hidden;
-}/* Açılış ekranı */
-#intro {
-position:fixed;
-width:100%;
-height:100%;
-background:#1e2f1c;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-z-index:10;
 }
 
-.bigM {
-font-size:120px;
-font-weight:bold;
-color:#ff4d6d;
-animation: pulse 1.5s infinite;
+/* Açılış */
+#intro{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#1e2f1c;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
 }
 
-@keyframes pulse {
-0%{transform:scale(1);}
-50%{transform:scale(1.2);}
-100%{transform:scale(1);}
+.bigM{
+    font-size:120px;
+    color:#ff4d6d;
+    animation:pulse 1.5s infinite;
 }
 
-button {
-padding:12px 25px;
-font-size:18px;
-border:none;
-border-radius:8px;
-background:#ff4d6d;
-color:white;
-cursor:pointer;
-margin-top:20px;
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.2);}
+    100%{transform:scale(1);}
+}
+
+button{
+    padding:12px 20px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    background:#ff4d6d;
+    color:white;
+    cursor:pointer;
+    margin:6px;
 }
 
 /* Kalpler */
-.heart {
-position:absolute;
-color:#ff4d6d;
-animation: float 5s linear infinite;
+.heart{
+    position:absolute;
+    animation:float 6s linear infinite;
 }
 
-@keyframes float {
-from {transform: translateY(100vh);}
-to {transform: translateY(-10vh);}
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
 }
 
-/* Oyun alanı */
-#gameArea {
-display:none;
-padding-top:40px;
+/* Oyun */
+#gameArea{
+    display:none;
+    padding-top:40px;
 }
 
-.target {
-position:absolute;
-font-size:35px;
-cursor:pointer;
+.target{
+    position:absolute;
+    font-size:35px;
+    cursor:pointer;
 }
 
-/* Final ekranı */
-#final {
-display:none;
-position:fixed;
-width:100%;
-height:100%;
-background:#1e2f1c;
-color:white;
-padding:30px;
+/* Final */
+#final{
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:#1e2f1c;
+    overflow:auto;
+    padding:20px;
 }
-</style>
-
-</head>
+</style></head>
 <body><!-- Açılış --><div id="intro">
     <div class="bigM">M</div>
-    <h2>Askerim için küçük bir sürpriz...</h2>
+    <h2>Askerim için küçük bir sürpriz</h2>
     <button onclick="startSite()">Başla</button>
 </div><!-- Oyun --><div id="gameArea">
-    <h2>Görev: Kalpleri yakala ❤️</h2>
+    <h2>Görev: Madalyaları yakala 🎖️</h2>
     <h3>Skor: <span id="score">0</span> / 10</h3>
-</div><!-- Final --><div id="final">
-    <h1>Görev Tamamlandı Asker!</h1>
-    <p>
-    10/10 başarıyla tamamlandı.<br><br>Sen vatanın için görevdeyken,<br>
-ben de seni bekleme görevindeyim.<br><br>
+</div><!-- Final --><div id="final"><h1>Görev Tamamlandı Asker!</h1>
 
-Mesafeler uzun olabilir,<br>
-günler zor geçebilir,<br>
-ama bil ki…<br><br>
-
-Seni çok seven,<br>
-seninle gurur duyan<br>
-ve seni sabırla bekleyen biri var.<br><br>
-
-Seninle gurur duyuyorum askerim.<br><br>
-
-<b>Seni çok seviyorum.<br>
-— Sude ❤️</b>
+<p>
+Sen vatanın için görevdeyken,<br>
+ben de seni bekleme görevindeyim.<br>
+Ve bu görev sevgiyle devam ediyor.
 </p>
 
-</div><script>
-let score = 0;
+<h2>Kavuşmamıza Kalan Süre</h2>
+<h3 id="countdown"></h3>
 
-/* Açılış sonrası */
+<h3 id="dailyMessage"></h3>
+
+<br>
+
+<button onclick="missYou()">Beni özlediğinde</button>
+<button onclick="motivation()">Motivasyon ver</button>
+<button onclick="note()">Sude’den not</button>
+
+<p id="extraMessage" style="margin-top:20px; font-size:18px;"></p>
+
+</div><script>
+let score=0;
+
+/* Başlat */
 function startSite(){
     document.getElementById("intro").style.display="none";
     document.getElementById("gameArea").style.display="block";
-    createHeartsBackground();
+    createBackgroundHearts();
     spawnTarget();
 }
 
-/* Arka planda uçan kalpler */
-function createHeartsBackground(){
+/* Arka plan kalpler */
+function createBackgroundHearts(){
     setInterval(()=>{
-        let heart = document.createElement("div");
+        let heart=document.createElement("div");
         heart.className="heart";
         heart.innerHTML="❤️";
         heart.style.left=Math.random()*100+"vw";
-        heart.style.fontSize=(20+Math.random()*20)+"px";
+        heart.style.fontSize=(15+Math.random()*20)+"px";
         document.body.appendChild(heart);
 
-        setTimeout(()=>heart.remove(),5000);
+        setTimeout(()=>heart.remove(),6000);
     },400);
 }
 
-/* Tıklanacak hedef */
+/* Oyun hedefi */
 function spawnTarget(){
-    let target = document.createElement("div");
+    let target=document.createElement("div");
     target.className="target";
     target.innerHTML="🎖️";
     target.style.left=Math.random()*90+"vw";
     target.style.top=(100+Math.random()*400)+"px";
 
-    target.onclick = function(){
+    target.onclick=function(){
         score++;
-        document.getElementById("score").innerText = score;
+        document.getElementById("score").innerText=score;
         target.remove();
 
-        if(score >= 10){
+        if(score>=10){
             endGame();
         }else{
             spawnTarget();
@@ -159,10 +157,73 @@ function spawnTarget(){
     document.body.appendChild(target);
 }
 
-/* Oyun bitişi */
+/* Oyun bitiş */
 function endGame(){
     document.getElementById("gameArea").style.display="none";
     document.getElementById("final").style.display="block";
+    startCountdown();
+    showDailyMessage();
+}
+
+/* TERHİS GERİ SAYIM */
+/* Mert 9 Şubat 2026 gitti → 9 Şubat 2027 dönüş */
+let targetDate=new Date("2027-02-09T00:00:00");
+
+function startCountdown(){
+    function update(){
+        let now=new Date();
+        let diff=targetDate-now;
+
+        let days=Math.floor(diff/(1000*60*60*24));
+        let hours=Math.floor((diff/(1000*60*60))%24);
+        let minutes=Math.floor((diff/(1000*60))%60);
+
+        document.getElementById("countdown").innerText=
+        days+" gün "+hours+" saat "+minutes+" dakika";
+    }
+
+    update();
+    setInterval(update,60000);
+}
+
+/* Günlük mesaj */
+function showDailyMessage(){
+    let messages=[
+        "Bugün de seni düşünerek geçti.",
+        "Bir gün daha geçti, sana bir gün daha yaklaştık.",
+        "Seninle gurur duyuyorum askerim.",
+        "Kalbim hep seninle.",
+        "Seni beklemek zor değil, çünkü sen buna değersin.",
+        "Her gün sana biraz daha yaklaşıyoruz.",
+        "Mesafeler geçici, sevgimiz kalıcı."
+    ];
+
+    let random=Math.floor(Math.random()*messages.length);
+    document.getElementById("dailyMessage").innerText=messages[random];
+}
+
+/* Butonlar */
+function missYou(){
+    document.getElementById("extraMessage").innerText=
+    "Ben de seni çok özlüyorum. Hep kalbimdesin.";
+}
+
+function note(){
+    document.getElementById("extraMessage").innerText=
+    "Dönünce ilk sarılma hakkı bana ait ❤️";
+}
+
+function motivation(){
+    let messages=[
+        "Güçlüsün askerim.",
+        "Az kaldı, dayan.",
+        "Seninle gurur duyuyorum.",
+        "Her gün sana yaklaşıyoruz.",
+        "Seni sabırla bekliyorum."
+    ];
+
+    let random=Math.floor(Math.random()*messages.length);
+    document.getElementById("extraMessage").innerText=messages[random];
 }
 </script></body>
 </html>
