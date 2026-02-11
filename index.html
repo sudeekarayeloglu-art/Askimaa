@@ -1,182 +1,168 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html lang="tr">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aşkımaa ❤️</title>
-
+<meta charset="UTF-8">
+<title>Askerim İçin</title>
 <style>
 body {
-    margin: 0;
+    margin:0;
     font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(#ffe6f0, #fff0f5);
-    overflow: hidden;
+    background: linear-gradient(#2e4d2c, #6b8f5a);
+    color:white;
+    text-align:center;
+    overflow:hidden;
+}/* Açılış ekranı */
+#intro {
+position:fixed;
+width:100%;
+height:100%;
+background:#1e2f1c;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:10;
 }
 
-/* Açılış ekranı */
-#opening {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #ffccdd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 10;
-}
-
-#mainContent {
-    display: none;
-    padding: 20px;
-}
-
-/* Buton */
-button {
-    padding: 15px 25px;
-    font-size: 18px;
-    background: #e6005c;
-    color: white;
-    border: none;
-    border-radius: 10px;
-}
-
-/* Büyük M */
 .bigM {
-    font-size: 110px;
-    color: #e6005c;
-    margin: 10px;
+font-size:120px;
+font-weight:bold;
+color:#ff4d6d;
+animation: pulse 1.5s infinite;
 }
 
-/* Yazılar */
-h1 {
-    color: #e6005c;
+@keyframes pulse {
+0%{transform:scale(1);}
+50%{transform:scale(1.2);}
+100%{transform:scale(1);}
 }
 
-.message {
-    font-size: 18px;
-    margin: 15px;
-    color: #444;
+button {
+padding:12px 25px;
+font-size:18px;
+border:none;
+border-radius:8px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+margin-top:20px;
 }
 
-/* Arka plan kalpleri */
-.bgHeart {
-    position: fixed;
-    bottom: -10px;
-    color: #ff4d88;
-    animation: floatUp 6s linear infinite;
+/* Kalpler */
+.heart {
+position:absolute;
+color:#ff4d6d;
+animation: float 5s linear infinite;
 }
 
-@keyframes floatUp {
-    from {
-        transform: translateY(0);
-        opacity: 1;
-    }
-    to {
-        transform: translateY(-800px);
-        opacity: 0;
-    }
+@keyframes float {
+from {transform: translateY(100vh);}
+to {transform: translateY(-10vh);}
 }
 
 /* Oyun alanı */
 #gameArea {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    margin-top: 20px;
-    border-top: 1px solid #ffcce0;
+display:none;
+padding-top:40px;
 }
 
-.gameHeart {
-    position: absolute;
-    font-size: 30px;
-    cursor: pointer;
+.target {
+position:absolute;
+font-size:35px;
+cursor:pointer;
+}
+
+/* Final ekranı */
+#final {
+display:none;
+position:fixed;
+width:100%;
+height:100%;
+background:#1e2f1c;
+color:white;
+padding:30px;
 }
 </style>
+
 </head>
-
-<body>
-
-<!-- Açılış -->
-<div id="opening">
-    <h2>Aşkımaa için bir sürpriz var ❤️</h2>
-    <button onclick="startSite()">Aç</button>
-</div>
-
-<!-- Ana içerik -->
-<div id="mainContent">
-
+<body><!-- Açılış --><div id="intro">
     <div class="bigM">M</div>
+    <h2>Askerim için küçük bir sürpriz...</h2>
+    <button onclick="startSite()">Başla</button>
+</div><!-- Oyun --><div id="gameArea">
+    <h2>Görev: Kalpleri yakala ❤️</h2>
+    <h3>Skor: <span id="score">0</span> / 10</h3>
+</div><!-- Final --><div id="final">
+    <h1>Görev Tamamlandı Asker!</h1>
+    <p>
+    10/10 başarıyla tamamlandı.<br><br>Sen vatanın için görevdeyken,<br>
+ben de seni bekleme görevindeyim.<br><br>
 
-    <h1>Aşkımaa ❤️</h1>
+Mesafeler uzun olabilir,<br>
+günler zor geçebilir,<br>
+ama bil ki…<br><br>
 
-    <div class="message">
-        Sen vatana hizmet ederken  
-        kalbim hep seninle.  
-        Mesafeler geçici…  
-        Bizim sevgimiz her şeyden güçlü.  
-        Seni çok seviyorum.
-    </div>
+Seni çok seven,<br>
+seninle gurur duyan<br>
+ve seni sabırla bekleyen biri var.<br><br>
 
-    <h3>Kalbi Yakala ❤️</h3>
-    <div>Skor: <span id="score">0</span></div>
+Seninle gurur duyuyorum askerim.<br><br>
 
-    <div id="gameArea"></div>
+<b>Seni çok seviyorum.<br>
+— Sude ❤️</b>
+</p>
 
-</div>
-
-<script>
-
-// Açılış
-function startSite() {
-    document.getElementById("opening").style.display = "none";
-    document.getElementById("mainContent").style.display = "block";
-}
-
-// Arka plan uçan kalpler
-function createBgHeart() {
-    let heart = document.createElement("div");
-    heart.classList.add("bgHeart");
-    heart.innerHTML = "❤";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
-    document.body.appendChild(heart);
-
-    setTimeout(() => {
-        heart.remove();
-    }, 6000);
-}
-
-setInterval(createBgHeart, 500);
-
-// Oyun
+</div><script>
 let score = 0;
-let gameArea = document.getElementById("gameArea");
 
-function createGameHeart() {
-    let heart = document.createElement("div");
-    heart.classList.add("gameHeart");
-    heart.innerHTML = "❤️";
+/* Açılış sonrası */
+function startSite(){
+    document.getElementById("intro").style.display="none";
+    document.getElementById("gameArea").style.display="block";
+    createHeartsBackground();
+    spawnTarget();
+}
 
-    heart.style.left = Math.random() * 90 + "%";
-    heart.style.top = Math.random() * 250 + "px";
+/* Arka planda uçan kalpler */
+function createHeartsBackground(){
+    setInterval(()=>{
+        let heart = document.createElement("div");
+        heart.className="heart";
+        heart.innerHTML="❤️";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(20+Math.random()*20)+"px";
+        document.body.appendChild(heart);
 
-    heart.onclick = function() {
+        setTimeout(()=>heart.remove(),5000);
+    },400);
+}
+
+/* Tıklanacak hedef */
+function spawnTarget(){
+    let target = document.createElement("div");
+    target.className="target";
+    target.innerHTML="🎖️";
+    target.style.left=Math.random()*90+"vw";
+    target.style.top=(100+Math.random()*400)+"px";
+
+    target.onclick = function(){
         score++;
         document.getElementById("score").innerText = score;
-        heart.remove();
-    };
+        target.remove();
 
-    gameArea.appendChild(heart);
+        if(score >= 10){
+            endGame();
+        }else{
+            spawnTarget();
+        }
+    }
 
-    setTimeout(() => {
-        heart.remove();
-    }, 3000);
+    document.body.appendChild(target);
 }
 
-setInterval(createGameHeart, 1500);
-
-</script>
-
-</body>
+/* Oyun bitişi */
+function endGame(){
+    document.getElementById("gameArea").style.display="none";
+    document.getElementById("final").style.display="block";
+}
+</script></body>
 </html>
