@@ -1,175 +1,112 @@
-<!DOCTYPE html><html lang="tr">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Aşkımaa ❤️</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aşkımaa ❤️</title>
+
+<style>
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial;
     text-align: center;
-    background: linear-gradient(rgba(255,230,240,0.9), rgba(255,204,213,0.9));
-}
-
-/* Açılış ekranı */
-#startScreen {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #ffc2d1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 10;
-}
-
-#startScreen h1 {
-    font-size: 32px;
-    color: #c9184a;
-}
-
-#startScreen button {
-    padding: 15px 30px;
-    font-size: 20px;
-    background: #c9184a;
-    color: white;
-    border: none;
-    border-radius: 15px;
-}
-
-/* Ana içerik */
-.container {
-    padding: 30px;
-    display: none;
+    background: #fff0f5;
+    color: #333;
 }
 
 h1 {
-    color: #c9184a;
-    font-size: 40px;
+    color: #e6005c;
 }
 
-.m {
-    font-size: 90px;
-    color: #ff4d6d;
-    animation: pulse 1.5s infinite;
+#countdown {
+    font-size: 22px;
+    margin: 20px;
+    color: #cc0052;
 }
 
-@keyframes pulse {
-    0% {transform: scale(1);}
-    50% {transform: scale(1.2);}
-    100% {transform: scale(1);}
-}
-
-p {
-    font-size: 18px;
-    color: #333;
-    max-width: 600px;
+.slider {
+    position: relative;
+    max-width: 300px;
     margin: auto;
 }
 
-img {
-    width: 260px;
-    border-radius: 20px;
-    margin-top: 20px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+.slide {
+    display: none;
 }
 
-button.mainBtn {
-    margin-top: 20px;
-    padding: 12px 25px;
-    font-size: 18px;
-    background-color: #c9184a;
-    color: white;
-    border: none;
-    border-radius: 12px;
+.slide img {
+    width: 100%;
+    border-radius: 15px;
 }
 
-.heart {
-    position: fixed;
-    color: #ff4d6d;
-    font-size: 22px;
-    animation: float 4s linear;
-}
-
-@keyframes float {
-    from {transform: translateY(0);}
-    to {transform: translateY(-800px);}
-}
-
-.countdown {
+audio {
     margin-top: 15px;
-    font-size: 22px;
-    color: #c9184a;
 }
-</style></head><body><!-- Açılış --><div id="startScreen">
-    <h1>Aşkımaa, hazır mısın? ❤️</h1>
-    <button onclick="baslat()">Evet</button>
-</div><!-- Müzik --><audio id="muzik" loop>
-    <source src="sarki.mp3" type="audio/mpeg">
-</audio><!-- Ana site --><div class="container" id="site"><h1>Aşkımaa ❤️</h1>
-<div class="m">M</div><p>
-Boynumda taşıdığım harf sadece baş harfin değil…  
-Kalbimde taşıdığım sensin.<br><br>
-Şimdi askerdesin ama ben burada seni bekliyorum.
-</p><img id="galeri" src="foto1.jpg"><div class="countdown" id="sayac"></div><button class="mainBtn" onclick="kalp()">Bana Tıkla ❤️</button>
+</style>
+</head>
 
-<br><br>
+<body>
 
-<h2>Bizim Hikayemiz</h2><p>
-Hastanede tanıştığımız gün hayatım değişti.  
-Yağmurda beni beklediğin gün, tuttuğun ilk elim…  
-O günden beri biliyorum ki sen benim evimsin.
-</p><button class="mainBtn" onclick="finalMesaj()">Son Mesaj</button>
+<h1>Aşkımaa ❤️</h1>
 
-</div><script>
+<p>
+Mesafeler önemli değil…  
+Her geçen gün seni bana daha da yaklaştırıyor.
+</p>
 
-// Başlat
-function baslat(){
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("site").style.display = "block";
-    document.getElementById("muzik").play();
-}
+<h2>Terhise Kalan Süre</h2>
+<div id="countdown"></div>
 
-// Kalp efekti
-function kalp() {
-    for (let i = 0; i < 30; i++) {
-        let heart = document.createElement("div");
-        heart.innerHTML = "❤️";
-        heart.className = "heart";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.top = "80vh";
-        document.body.appendChild(heart);
+<!-- MÜZİK -->
+<audio controls autoplay loop>
+  <source src="sarki.mp3" type="audio/mpeg">
+</audio>
 
-        setTimeout(() => heart.remove(), 4000);
-    }
-}
+<h2>Anılarımız</h2>
 
-// Final mesaj
-function finalMesaj(){
-    alert("Benimle hep kalır mısın? Seni çok seviyorum Aşkım ❤️");
+<div class="slider">
+<img class="slide" src="IMG-20260205-WA0018.jpg">
+<img class="slide" src="IMG-20260205-WA0022.jpg">
+<img class="slide" src="IMG-20260205-WA0028.jpg">
+
+<!-- DİĞER FOTOĞRAFLARI BURAYA AYNI ŞEKİLDE EKLE -->
+</div>
+
+<script>
+// FOTO SLIDER
+let index = 0;
+showSlides();
+
+function showSlides() {
+  let slides = document.getElementsByClassName("slide");
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+  index++;
+  if (index > slides.length) {index = 1}
+  slides[index-1].style.display = "block";
+  setTimeout(showSlides, 2000);
 }
 
-// Geri sayım
-let bitis = new Date("2026-12-01").getTime();
-setInterval(function() {
-    let simdi = new Date().getTime();
-    let fark = bitis - simdi;
-    let gun = Math.floor(fark / (1000 * 60 * 60 * 24));
-    document.getElementById("sayac").innerHTML =
-    "Kavuşmamıza kalan gün: " + gun + " ❤️";
-}, 1000);
+// GERİ SAYIM
+let targetDate = new Date("Feb 9, 2027 00:00:00").getTime();
 
-// Fotoğraf slayt
-let fotoNumarasi = 1;
-let toplamFoto = 25;  // foto sayını buradan değiştirebilirsin
+let countdownFunction = setInterval(function() {
 
-setInterval(function(){
-    fotoNumarasi++;
-    if(fotoNumarasi > toplamFoto){
-        fotoNumarasi = 1;
-    }
-    document.getElementById("galeri").src =
-    "foto" + fotoNumarasi + ".jpg";
-}, 3000);
+  let now = new Date().getTime();
+  let distance = targetDate - now;
 
-</script></body>
+  let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+  document.getElementById("countdown").innerHTML =
+  days + " gün " + hours + " saat " + minutes + " dakika";
+
+  if (distance < 0) {
+    clearInterval(countdownFunction);
+    document.getElementById("countdown").innerHTML = "Kavuştuk ❤️";
+  }
+}, 60000);
+</script>
+
+</body>
 </html>
